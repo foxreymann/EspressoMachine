@@ -5,6 +5,7 @@ require 'EspressoMachine.interface.php';
 class EspressoMachine implements EspressoMachineInterface
 {
     private $waterContainer;
+    private $amoutOfCoffeeMade = 0;
 
     protected $waterAmount;
     protected $waterCapacity;
@@ -27,7 +28,13 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return float of litres of coffee made
     */
-    public function makeEspresso() {}
+    public function makeEspresso() {
+        $waterAmount = 0.05;
+        $this->amoutOfCoffeeMade+=$waterAmount;
+        $this->waterAmount-=$waterAmount;
+
+        return $this->amoutOfCoffeeMade; 
+    }
 
     /**
     * @see makeEspresso
