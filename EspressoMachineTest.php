@@ -93,11 +93,9 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(9,$machine->getWater());
     } 
 
-    /*
     public function testAddingFiftyBeans() {
         $machine = new EspressoMachine();
         $machine->addBeans(50);
         $this->assertEquals(50,$machine->getBeans()); 
     }
-    */
 }

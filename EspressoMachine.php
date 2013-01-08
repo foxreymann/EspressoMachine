@@ -7,13 +7,16 @@ error_reporting(-1);
 class EspressoMachine implements EspressoMachineInterface
 {
     private $waterContainer;
+    private $beansContainer;
     private $amountOfCofeeMadeInMl = 0;
     private $needsDescaling = false;
 
 
     public function __construct() {
-        $contrainer = new WaterContainerImplementation(2000); 
-        $this->setWaterContainer($contrainer);
+        $waterContrainer = new WaterContainerImplementation(2000); 
+        $this->setWaterContainer($waterContrainer);
+        $beansContrainer = new BeansContainerImplementation(50); 
+        $this->setBeansContainer($beansContrainer);
     }
 
     /**
@@ -91,7 +94,9 @@ class EspressoMachine implements EspressoMachineInterface
     /**
     * @param BeansContainer $container
     */
-    public function setBeansContainer(BeansContainer $container) {}
+    public function setBeansContainer(BeansContainer $container) {
+        $this->beansContainer = $container;
+    }
 
     /**
     * @return BeansContainer
@@ -151,40 +156,8 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return void
     */
-    public function addBeans($numSpoons) {}
-
-    /**
-    * Get $numSpoons from the container
-    *
-    * @throws EspressoMachineContainerException
-    * @param integer $numSpoons number of spoons of beans
-    * @return integer
-    */
-    public function useBeans($numSpoons) {}
-
-    /**
-    * Returns the number of spoons of beans left in the container
-    *
-    * @return integer
-    */
-    public function getBeans() {}
-}
-
-class BeansContainerImplementation extends Container implements BeansContainer
-{
-    protected $beansAmount;
-    protected $beansCapacity;
-
-    /**
-    * Adds beans to the container
-    *
-    * @param integer $numSpoons number of spoons of beans
-    * @throws ContainerFullException, EspressoMachineContainerException
-    *
-    * @return void
-    */
     public function addBeans($numSpoons) {
-
+        $this->beansContainer->addBeans($numSpoons);
     }
 
     /**
@@ -195,7 +168,7 @@ class BeansContainerImplementation extends Container implements BeansContainer
     * @return integer
     */
     public function useBeans($numSpoons) {
-
+        $this->beansContainer->useBeans($numSpoons);
     }
 
     /**
@@ -204,7 +177,42 @@ class BeansContainerImplementation extends Container implements BeansContainer
     * @return integer
     */
     public function getBeans() {
+        return $this->beansContainer->getBeans();
+    }
+}
 
+class BeansContainerImplementation extends Container implements BeansContainer
+{
+    /**
+    * Adds beans to the container
+    *
+    * @param integer $numSpoons number of spoons of beans
+    * @throws ContainerFullException, EspressoMachineContainerException
+    *
+    * @return void
+    */
+    public function addBeans($numSpoons) {
+        $this->add($numSpoons);
+    }
+
+    /**
+    * Get $numSpoons from the container
+    *
+    * @throws EspressoMachineContainerException
+    * @param integer $numSpoons number of spoons of beans
+    * @return integer
+    */
+    public function useBeans($numSpoons) {
+        $this->used($numSpoons);
+    }
+
+    /**
+    * Returns the number of spoons of beans left in the container
+    *
+    * @return integer
+    */
+    public function getBeans() {
+        return $this->get();
     }
 
 }
