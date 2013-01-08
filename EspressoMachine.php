@@ -29,11 +29,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeEspresso() {
-        $waterAmount = 0.05;
-        $this->amoutOfCoffeeMade+=$waterAmount;
-        $this->waterAmount-=$waterAmount;
-
-        return $this->amoutOfCoffeeMade; 
+        return $this->makeCoffee(0.05);
     }
 
     /**
@@ -42,7 +38,15 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return float of litres of coffee made
     */
-    public function makeDoubleEspresso() {}
+    public function makeDoubleEspresso() {
+        return $this->makeCoffee(0.1);
+    }
+
+    private function makeCoffee($waterAmount) {
+        $this->amoutOfCoffeeMade+=$waterAmount;
+        $this->waterAmount-=$waterAmount;
+        return $this->amoutOfCoffeeMade; 
+    }
 
     /**
     * This method controls what is displayed on the screen of the machine
@@ -111,10 +115,6 @@ class EspressoMachine implements EspressoMachineInterface
         return $this->waterContainer->getWaterAmount();
     }
 
-    protected function getWaterAmount() {
-        return $this->waterAmount;
-    }
-
     /**
     * Adds beans to the container
     *
@@ -152,6 +152,10 @@ class WaterContainerImplementation extends EspressoMachine
     public function __construct($capacity) {
         $this->waterCapacity = $capacity;
         $this->waterAmount = $capacity;
+    }
+
+    protected function getWaterAmount() {
+        return $this->waterAmount;
     }
 
 }
