@@ -170,7 +170,7 @@ class EspressoMachine implements EspressoMachineInterface
     public function getBeans() {}
 }
 
-class BeansContainerImplementation implements BeansContainer // extends Container
+class BeansContainerImplementation extends Container implements BeansContainer
 {
     protected $beansAmount;
     protected $beansCapacity;
@@ -209,16 +209,8 @@ class BeansContainerImplementation implements BeansContainer // extends Containe
 
 }
 
-class WaterContainerImplementation implements WaterContainer // extends Container
+class WaterContainerImplementation extends Container implements WaterContainer
 {
-    protected $waterAmount;
-    protected $waterCapacity;
-
-    public function __construct($capacity) {
-        $this->waterCapacity = $capacity;
-        $this->waterAmount = 0;
-    }
-
     /**
     * Adds water to the coffee machine's water tank
     *
@@ -228,7 +220,7 @@ class WaterContainerImplementation implements WaterContainer // extends Containe
     * @return void
     */
     public function addWater($liters) {
-        $this->waterAmount+=$liters;
+        $this->add($liters);
     }
 
     /**
@@ -239,7 +231,7 @@ class WaterContainerImplementation implements WaterContainer // extends Containe
     * @return integer
     */
     public function useWater($liters) {
-        $this->waterAmount-=$liters;
+        $this->used($liters);
     }
 
     /**
@@ -248,11 +240,10 @@ class WaterContainerImplementation implements WaterContainer // extends Containe
     * @return float number of litres
     */
     public function getWater() {
-        return $this->waterAmount;
+        return $this->get();
     }
 }
 
-?>
 class Container
 {
     protected $amount;
@@ -263,35 +254,15 @@ class Container
         $this->amount = 0;
     }
 
-    /**
-    * Adds water to the coffee machine's water tank
-    *
-    * @param float $litres
-    * @throws ContainerFullException, EspressoMachineContainerException
-    *
-    * @return void
-    */
-    public function addWater($liters) {
-        $this->waterAmount+=$liters;
+    public function add($amount) {
+        $this->amount+=$amount;
     }
 
-    /**
-    * Use $litres from the container
-    *
-    * @throws EspressoMachineContainerException
-    * @param float $litres
-    * @return integer
-    */
-    public function useWater($liters) {
-        $this->waterAmount-=$liters;
+    public function used($amount) {
+        $this->amount-=$amount;
     }
 
-    /**
-    * Returns the volume of water left in the container
-    *
-    * @return float number of litres
-    */
-    public function getWater() {
-        return $this->waterAmount;
+    public function get() {
+        return $this->amount;
     }
 }
