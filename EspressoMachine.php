@@ -5,7 +5,8 @@ require 'EspressoMachine.interface.php';
 class EspressoMachine implements EspressoMachineInterface
 {
     private $waterContainer;
-    private $amoutOfCoffeeMade = 0;
+    private $amountOfCoffeeMade = 0;
+    private $needsDescaling = false;
 
     /**
     * Runs the process to descale the machine
@@ -40,8 +41,17 @@ class EspressoMachine implements EspressoMachineInterface
     }
 
     private function makeCoffee($waterAmount) {
+        if($this->needsDescaling) {
+           throw new DescaleNeededException(); 
+        }
+
+        if(intval($this->amountOfCoffeeMade / 5) < intval(($this->amountOfCoffeeMade + $waterAmount) / 5)) {
+            $this->needsDescaling = true;
+        }
+
         $this->amoutOfCoffeeMade+=$waterAmount;
         $this->waterAmount-=$waterAmount;
+    
         return $this->amoutOfCoffeeMade; 
     }
 
@@ -91,7 +101,9 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return void
     */
-    public function addWater($litres) {}
+    public function addWater($liters) {
+        $this->waterContainer->addWater($liters);
+    }
 
     /**
     * Use $litres from the container
@@ -100,7 +112,9 @@ class EspressoMachine implements EspressoMachineInterface
     * @param float $litres
     * @return integer
     */
-    public function useWater($litres) {}
+    public function useWater($litres) {
+        $this->waterContainer->useWater($litres);
+    }
 
     /**
     * Returns the volume of water left in the container
@@ -193,8 +207,8 @@ class WaterContainerImplementation implements WaterContainer
     *
     * @return void
     */
-    public function addWater($litres) {
-         
+    public function addWater($liters) {
+        $this->waterAmount+=$liters;
     }
 
     /**
@@ -204,8 +218,8 @@ class WaterContainerImplementation implements WaterContainer
     * @param float $litres
     * @return integer
     */
-    public function useWater($litres) {
-
+    public function useWater($liters) {
+        $this->waterAmount-=$liters;
     }
 
     /**
