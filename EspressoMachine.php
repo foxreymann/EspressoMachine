@@ -2,10 +2,12 @@
 
 require 'EspressoMachine.interface.php';
 
+error_reporting(-1);
+
 class EspressoMachine implements EspressoMachineInterface
 {
     private $waterContainer;
-    private $amountOfCoffeeMade = 0;
+    private $amountOfCofeeMadeInMl = 0;
     private $needsDescaling = false;
 
     /**
@@ -27,7 +29,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeEspresso() {
-        return $this->makeCoffee(0.05);
+        return $this->makeCoffee(50);
     }
 
     /**
@@ -37,22 +39,20 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeDoubleEspresso() {
-        return $this->makeCoffee(0.1);
+        return $this->makeCoffee(100);
     }
 
     private function makeCoffee($waterAmount) {
         if($this->needsDescaling) {
            throw new DescaleNeededException(); 
         }
-
-        if(intval($this->amountOfCoffeeMade / 5) < intval(($this->amountOfCoffeeMade + $waterAmount) / 5)) {
+        if(($this->amountOfCofeeMadeInMl / 5000) < intval(($this->amountOfCofeeMadeInMl + $waterAmount) / 5000)) {
             $this->needsDescaling = true;
         }
 
-        $this->amoutOfCoffeeMade+=$waterAmount;
+        $this->amountOfCofeeMadeInMl+=$waterAmount;
         $this->waterAmount-=$waterAmount;
-    
-        return $this->amoutOfCoffeeMade; 
+        return $this->amountOfCofeeMadeInMl / 1000; 
     }
 
     /**
