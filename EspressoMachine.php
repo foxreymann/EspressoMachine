@@ -10,6 +10,12 @@ class EspressoMachine implements EspressoMachineInterface
     private $amountOfCofeeMadeInMl = 0;
     private $needsDescaling = false;
 
+
+    public function __construct() {
+        $contrainer = new WaterContainerImplementation(2000); 
+        $this->setWaterContainer($contrainer);
+    }
+
     /**
     * Runs the process to descale the machine
     * so the machine can be used make coffee
@@ -164,8 +170,11 @@ class EspressoMachine implements EspressoMachineInterface
     public function getBeans() {}
 }
 
-class BeansContainerImplementation implements BeansContainer
+class BeansContainerImplementation implements BeansContainer // extends Container
 {
+    protected $beansAmount;
+    protected $beansCapacity;
+
     /**
     * Adds beans to the container
     *
@@ -200,14 +209,14 @@ class BeansContainerImplementation implements BeansContainer
 
 }
 
-class WaterContainerImplementation implements WaterContainer
+class WaterContainerImplementation implements WaterContainer // extends Container
 {
     protected $waterAmount;
     protected $waterCapacity;
 
     public function __construct($capacity) {
         $this->waterCapacity = $capacity;
-        $this->waterAmount = $capacity;
+        $this->waterAmount = 0;
     }
 
     /**
@@ -241,5 +250,48 @@ class WaterContainerImplementation implements WaterContainer
     public function getWater() {
         return $this->waterAmount;
     }
+}
 
+?>
+class Container
+{
+    protected $amount;
+    protected $capacity;
+
+    public function __construct($capacity) {
+        $this->capacity = $capacity;
+        $this->amount = 0;
+    }
+
+    /**
+    * Adds water to the coffee machine's water tank
+    *
+    * @param float $litres
+    * @throws ContainerFullException, EspressoMachineContainerException
+    *
+    * @return void
+    */
+    public function addWater($liters) {
+        $this->waterAmount+=$liters;
+    }
+
+    /**
+    * Use $litres from the container
+    *
+    * @throws EspressoMachineContainerException
+    * @param float $litres
+    * @return integer
+    */
+    public function useWater($liters) {
+        $this->waterAmount-=$liters;
+    }
+
+    /**
+    * Returns the volume of water left in the container
+    *
+    * @return float number of litres
+    */
+    public function getWater() {
+        return $this->waterAmount;
+    }
 }

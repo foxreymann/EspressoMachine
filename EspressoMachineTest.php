@@ -6,37 +6,34 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 {
     public function testSettingTwoLiterWaterContainer() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(2000); 
-        $machine->setWaterContainer($contrainer);
+        $machine->addWater(2000);
         $this->assertEquals(2000,$machine->getWater()); 
     }
 
     public function testIfMakeEspressoReturnAmountOfCoffeeMade() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(2000); 
-        $machine->setWaterContainer($contrainer);
+        $machine->addWater(2000);
         $this->assertEquals(0.05,$machine->makeEspresso());
     } 
 
     public function testIfMakeDoubleEspressoReturnAmountOfCoffeeMade() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(2000); 
-        $machine->setWaterContainer($contrainer);
+        $machine->addWater(2000);
         $this->assertEquals(0.1,$machine->makeDoubleEspresso());
     } 
 
     public function testUsingWater() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(10); 
-        $machine->setWaterContainer($contrainer);
-        $machine->useWater(1.5);
-        $this->assertEquals(8.5,$machine->getWater()); 
+        $machine->addWater(2000);
+        $machine->useWater(1500);
+        $this->assertEquals(500,$machine->getWater()); 
     }    
 
     public function testAddingWater() {
         $machine = new EspressoMachine();
         $contrainer = new WaterContainerImplementation(10000); 
         $machine->setWaterContainer($contrainer);
+        $machine->addWater(10000);
         $machine->useWater(1500);
         $machine->addWater(1000);
         $this->assertEquals(9500,$machine->getWater()); 
@@ -46,6 +43,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine = new EspressoMachine();
         $contrainer = new WaterContainerImplementation(10000); 
         $machine->setWaterContainer($contrainer);
+        $machine->addWater(10000);
         for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
         }        
@@ -60,8 +58,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 
     public function testNoWaterException() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(1000); 
-        $machine->setWaterContainer($contrainer);
+        $machine->addWater(1000);
         for($i = 0; $i < 10; $i++) {
             $machine->makeDoubleEspresso();
         }        
@@ -78,7 +75,8 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine = new EspressoMachine();
         $contrainer = new WaterContainerImplementation(10000); 
         $machine->setWaterContainer($contrainer);
-        for($i = 0; $i < 50; $i++) {
+        $machine->addWater(10000); 
+       for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
         }        
         $this->assertEquals(true,$machine->needsDescaling());
@@ -90,6 +88,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine = new EspressoMachine();
         $contrainer = new WaterContainerImplementation(10000); 
         $machine->setWaterContainer($contrainer);
+        $machine->addWater(10000);
         $machine->descale();
         $this->assertEquals(9000,$machine->getWater());
     } 
