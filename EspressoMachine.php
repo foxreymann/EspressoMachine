@@ -19,7 +19,9 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return void
     */
-    public function descale() {}
+    public function descale() {
+        $this->needsDescaling = false;
+    }
 
     /**
     * Runs the process for making Espresso
@@ -43,7 +45,7 @@ class EspressoMachine implements EspressoMachineInterface
     }
 
     private function makeCoffee($waterAmount) {
-        if($this->needsDescaling) {
+        if($this->needsDescaling()) {
            throw new DescaleNeededException(); 
         }
 
@@ -74,6 +76,10 @@ class EspressoMachine implements EspressoMachineInterface
     * @return string
     */
     public function getStatus() {}
+
+    public function needsDescaling() {
+        return $this->needsDescaling;
+    }
 
     /**
     * @param BeansContainer $container
