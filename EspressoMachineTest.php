@@ -52,6 +52,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine->addBeans(50);
         for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
+            $machine->addBeans(2);
         }        
         try {
             $machine->makeDoubleEspresso();
@@ -86,6 +87,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine->addBeans(50);
        for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
+            $machine->addBeans(2);
         }        
         $this->assertEquals(true,$machine->needsDescaling());
         $machine->descale();
@@ -122,6 +124,19 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
             return;
         }
         $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testDescalingNoWaterException() {
+        $machine = new EspressoMachine();
+        $machine->addBeans(20);
+        try {
+            $machine->descale();
+        }
+        catch (NoWaterException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+         
     }
 
 }

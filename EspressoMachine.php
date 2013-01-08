@@ -29,6 +29,9 @@ class EspressoMachine implements EspressoMachineInterface
     * @return void
     */
     public function descale() {
+        if($this->waterContainer->getWater() - 1000 < 0) {
+            throw new NoWaterException();
+        }
         $this->needsDescaling = false;
         $this->waterContainer->useWater(1000);
     }
@@ -73,6 +76,7 @@ class EspressoMachine implements EspressoMachineInterface
         }
 
         $this->waterContainer->useWater($waterAmount);
+        $this->beansContainer->useBeans($beansAmount);
         return $this->amountOfCofeeMadeInMl / 1000; 
     }
 
