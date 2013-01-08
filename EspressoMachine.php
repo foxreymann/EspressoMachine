@@ -27,7 +27,7 @@ class EspressoMachine implements EspressoMachineInterface
     */
     public function descale() {
         $this->needsDescaling = false;
-        $this->useWater(1000);
+        $this->waterContainer->useWater(1000);
     }
 
     /**
@@ -61,10 +61,10 @@ class EspressoMachine implements EspressoMachineInterface
         }
 
         $this->amountOfCofeeMadeInMl+=$waterAmount;
-        if($this->getWater() - $waterAmount < 0) {
+        if($this->waterContainer->getWater() - $waterAmount < 0) {
             throw new NoWaterException();
         }
-        $this->useWater($waterAmount);
+        $this->waterContainer->useWater($waterAmount);
         return $this->amountOfCofeeMadeInMl / 1000; 
     }
 
@@ -119,7 +119,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return void
     */
     public function addWater($liters) {
-        $this->waterContainer->addWater($liters);
+        $this->waterContainer->addWater($liters * 1000);
     }
 
     /**
@@ -130,7 +130,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return integer
     */
     public function useWater($litres) {
-        $this->waterContainer->useWater($litres);
+        $this->waterContainer->useWater($litres * 1000);
     }
 
     /**
@@ -140,7 +140,7 @@ class EspressoMachine implements EspressoMachineInterface
     */
 
     public function getWater() {
-        return $this->waterContainer->getWater();
+        return $this->waterContainer->getWater() / 1000;
     }
 
     /**
