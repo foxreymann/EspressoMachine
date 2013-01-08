@@ -46,12 +46,16 @@ class EspressoMachine implements EspressoMachineInterface
         if($this->needsDescaling) {
            throw new DescaleNeededException(); 
         }
+
         if(($this->amountOfCofeeMadeInMl / 5000) < intval(($this->amountOfCofeeMadeInMl + $waterAmount) / 5000)) {
             $this->needsDescaling = true;
         }
 
         $this->amountOfCofeeMadeInMl+=$waterAmount;
-        $this->waterAmount-=$waterAmount;
+        if($this->getWater() - $waterAmount < 0) {
+            throw new NoWaterException();
+        }
+        $this->useWater($waterAmount);
         return $this->amountOfCofeeMadeInMl / 1000; 
     }
 
