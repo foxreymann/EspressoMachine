@@ -21,6 +21,7 @@ class EspressoMachine implements EspressoMachineInterface
     */
     public function descale() {
         $this->needsDescaling = false;
+        $this->useWater(1000);
     }
 
     /**
