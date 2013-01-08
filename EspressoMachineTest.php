@@ -25,10 +25,12 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0.1,$machine->makeDoubleEspresso());
     } 
 
-    /*
     public function testUsingWater() {
+        $machine = new EspressoMachine();
         $contrainer = new WaterContainerImplementation(10); 
-        $this->assertEquals(2,$machine->getWater()); 
+        $machine->setWaterContainer($contrainer);
+        $machine->useWater(1.5);
+        $this->assertEquals(8.5,$machine->getWater()); 
     }    
-    */
+
 }
