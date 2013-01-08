@@ -7,9 +7,6 @@ class EspressoMachine implements EspressoMachineInterface
     private $waterContainer;
     private $amoutOfCoffeeMade = 0;
 
-    protected $waterAmount;
-    protected $waterCapacity;
-
     /**
     * Runs the process to descale the machine
     * so the machine can be used make coffee
@@ -112,7 +109,7 @@ class EspressoMachine implements EspressoMachineInterface
     */
 
     public function getWater() {
-        return $this->waterContainer->getWaterAmount();
+        return $this->waterContainer->getWater();
     }
 
     /**
@@ -142,19 +139,81 @@ class EspressoMachine implements EspressoMachineInterface
     public function getBeans() {}
 }
 
-class BeansContainerImplementation extends EspressoMachine
+class BeansContainerImplementation implements BeansContainer
 {
+    /**
+    * Adds beans to the container
+    *
+    * @param integer $numSpoons number of spoons of beans
+    * @throws ContainerFullException, EspressoMachineContainerException
+    *
+    * @return void
+    */
+    public function addBeans($numSpoons) {
+
+    }
+
+    /**
+    * Get $numSpoons from the container
+    *
+    * @throws EspressoMachineContainerException
+    * @param integer $numSpoons number of spoons of beans
+    * @return integer
+    */
+    public function useBeans($numSpoons) {
+
+    }
+
+    /**
+    * Returns the number of spoons of beans left in the container
+    *
+    * @return integer
+    */
+    public function getBeans() {
+
+    }
 
 }
 
-class WaterContainerImplementation extends EspressoMachine
+class WaterContainerImplementation implements WaterContainer
 {
+    protected $waterAmount;
+    protected $waterCapacity;
+
     public function __construct($capacity) {
         $this->waterCapacity = $capacity;
         $this->waterAmount = $capacity;
     }
 
-    protected function getWaterAmount() {
+    /**
+    * Adds water to the coffee machine's water tank
+    *
+    * @param float $litres
+    * @throws ContainerFullException, EspressoMachineContainerException
+    *
+    * @return void
+    */
+    public function addWater($litres) {
+         
+    }
+
+    /**
+    * Use $litres from the container
+    *
+    * @throws EspressoMachineContainerException
+    * @param float $litres
+    * @return integer
+    */
+    public function useWater($litres) {
+
+    }
+
+    /**
+    * Returns the volume of water left in the container
+    *
+    * @return float number of litres
+    */
+    public function getWater() {
         return $this->waterAmount;
     }
 
