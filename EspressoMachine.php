@@ -41,7 +41,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeEspresso() {
-        return $this->makeCoffee(50);
+        return $this->makeCoffee(50,1);
     }
 
     /**
@@ -51,10 +51,10 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeDoubleEspresso() {
-        return $this->makeCoffee(100);
+        return $this->makeCoffee(100,2);
     }
 
-    private function makeCoffee($waterAmount) {
+    private function makeCoffee($waterAmount,$beansAmount) {
         if($this->needsDescaling()) {
            throw new DescaleNeededException(); 
         }
@@ -62,11 +62,16 @@ class EspressoMachine implements EspressoMachineInterface
         if(($this->amountOfCofeeMadeInMl / 5000) < intval(($this->amountOfCofeeMadeInMl + $waterAmount) / 5000)) {
             $this->needsDescaling = true;
         }
-
         $this->amountOfCofeeMadeInMl+=$waterAmount;
+
         if($this->waterContainer->getWater() - $waterAmount < 0) {
             throw new NoWaterException();
         }
+
+        if($this->beansContainer->getBeans() - $beansAmount < 0) {
+            throw new NoBeansException();
+        }
+
         $this->waterContainer->useWater($waterAmount);
         return $this->amountOfCofeeMadeInMl / 1000; 
     }

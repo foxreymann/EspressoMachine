@@ -7,24 +7,28 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
     public function testSettingTwoLiterWaterContainer() {
         $machine = new EspressoMachine();
         $machine->addWater(2);
+        $machine->addBeans(50);
         $this->assertEquals(2,$machine->getWater()); 
     }
 
     public function testIfMakeEspressoReturnAmountOfCoffeeMade() {
         $machine = new EspressoMachine();
         $machine->addWater(2);
+        $machine->addBeans(50);
         $this->assertEquals(0.05,$machine->makeEspresso());
     } 
 
     public function testIfMakeDoubleEspressoReturnAmountOfCoffeeMade() {
         $machine = new EspressoMachine();
         $machine->addWater(2);
+        $machine->addBeans(50);
         $this->assertEquals(0.1,$machine->makeDoubleEspresso());
     } 
 
     public function testUsingWater() {
         $machine = new EspressoMachine();
         $machine->addWater(2);
+        $machine->addBeans(50);
         $machine->useWater(1.5);
         $this->assertEquals(0.5,$machine->getWater()); 
     }    
@@ -34,6 +38,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
+        $machine->addBeans(50);
         $machine->useWater(1.5);
         $machine->addWater(1);
         $this->assertEquals(9.5,$machine->getWater()); 
@@ -44,6 +49,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
+        $machine->addBeans(50);
         for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
         }        
@@ -59,6 +65,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
     public function testNoWaterException() {
         $machine = new EspressoMachine();
         $machine->addWater(1);
+        $machine->addBeans(50);
         for($i = 0; $i < 10; $i++) {
             $machine->makeDoubleEspresso();
         }        
@@ -76,6 +83,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10); 
+        $machine->addBeans(50);
        for($i = 0; $i < 50; $i++) {
             $machine->makeDoubleEspresso();
         }        
@@ -89,6 +97,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
+        $machine->addBeans(50);
         $machine->descale();
         $this->assertEquals(9,$machine->getWater());
     } 
@@ -98,4 +107,21 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine->addBeans(50);
         $this->assertEquals(50,$machine->getBeans()); 
     }
+
+    public function testNoBeansException() {
+        $machine = new EspressoMachine();
+        $machine->addWater(2);
+        $machine->addBeans(20);
+        for($i = 0; $i < 10; $i++) {
+            $machine->makeDoubleEspresso();
+        }        
+        try {
+            $machine->makeDoubleEspresso();
+        }
+        catch (NoBeansException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
+
 }
