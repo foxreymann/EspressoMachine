@@ -272,6 +272,10 @@ class Container
     }
 
     public function used($amount) {
+        if($this->amount - $amount < 0) {
+            throw new EspressoMachineContainerException(); 
+        }
+
         $this->amount-=$amount;
     }
 
