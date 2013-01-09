@@ -119,8 +119,7 @@ class EspressoMachine implements EspressoMachineInterface
     }
 
     private function espressosLeft() {
-        $waterEspressosLeft = 1000; //$this->getWater  
-
+        $waterEspressosLeft = floor($this->getWater() / 0.05);
         return min($this->getBeans(),$waterEspressosLeft);
     }
 
