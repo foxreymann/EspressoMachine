@@ -197,5 +197,11 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine = new EspressoMachine();
         $this->assertEquals('Add beans and water',$machine->getStatus());
     }
+
+    public function testGetStatusAddBeansWhenNoBeans() {
+        $machine = new EspressoMachine();
+        $machine->addWater(1);
+        $this->assertEquals('Add beans',$machine->getStatus());
+    }
     
 }
