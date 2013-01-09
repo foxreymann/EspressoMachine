@@ -94,7 +94,11 @@ class EspressoMachine implements EspressoMachineInterface
     *
     * @return string
     */
-    public function getStatus() {}
+    public function getStatus() {
+        if($this->needsDescaling) {
+            return 'Descale needed';
+        }
+    }
 
     public function needsDescaling() {
         return $this->needsDescaling;

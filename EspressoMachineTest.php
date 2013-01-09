@@ -161,4 +161,17 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $this->fail('An expected exception has not been raised.');
     }
 
+    public function testGetStatusDescaleNeededWhenEnoughWater() {
+        $machine = new EspressoMachine();
+        $contrainer = new WaterContainerImplementation(10); 
+        $machine->setWaterContainer($contrainer);
+        $machine->addWater(10);
+        $machine->addBeans(50);
+        for($i = 0; $i < 50; $i++) {
+            $machine->makeDoubleEspresso();
+            $machine->addBeans(2);
+        }        
+        $this->assertEquals('Descale needed',$machine->getStatus());
+    }
+
 }
