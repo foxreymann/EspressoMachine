@@ -231,5 +231,40 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine->addBeans(20);
         $this->assertEquals('2 Espressos left',$machine->getStatus());
     }
-    
+
+    public function testAddBeansContainerFullException() {
+        $machine = new EspressoMachine(); 
+        $machine->addBeans(40);
+        try {
+            $machine->addBeans(13); 
+        }
+        catch (ContainerFullException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
+
+    public function testAddBeansEspressoMachineContainerException() {
+        $machine = new EspressoMachine(); 
+        $machine->addBeans(40);
+        try {
+            $machine->addBeans(13); 
+        }
+        catch (EspressoMachineContainerException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
+   
+    public function testUseBeansEspressoMachineContainerException() {
+        $machine = new EspressoMachine(); 
+        try {
+            $machine->useBeans(13); 
+        }
+        catch (EspressoMachineContainerException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
+ 
 }
