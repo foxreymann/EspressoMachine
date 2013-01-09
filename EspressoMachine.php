@@ -107,14 +107,21 @@ class EspressoMachine implements EspressoMachineInterface
             return 'Add beans and water';
         }
 
+        if($this->getBeans() <= 0) {
+            return 'Add beans';
+        }
+
         if($this->getWater() <= 0) {
             return 'Add water';
         }
 
-        if($this->getBeans() <= 0) {
-            return 'Add beans';
-        }
-    
+        return $this->espressosLeft()." Espressos left"; 
+    }
+
+    private function espressosLeft() {
+        $waterEspressosLeft = 1000; //$this->getWater  
+
+        return min($this->getBeans(),$waterEspressosLeft);
     }
 
     public function needsDescaling() {
