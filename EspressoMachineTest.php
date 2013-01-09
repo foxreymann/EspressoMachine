@@ -174,4 +174,17 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Descale needed',$machine->getStatus());
     }
 
+    public function testGetStatusDescaleNeededWhenNotEnoughWater() {
+        $machine = new EspressoMachine();
+        $contrainer = new WaterContainerImplementation(10); 
+        $machine->setWaterContainer($contrainer);
+        $machine->addWater(5.5);
+        $machine->addBeans(50);
+        for($i = 0; $i < 50; $i++) {
+            $machine->makeDoubleEspresso();
+            $machine->addBeans(2);
+        }        
+        $this->assertEquals('Add water',$machine->getStatus());
+    }
+
 }
