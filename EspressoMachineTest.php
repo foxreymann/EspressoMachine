@@ -35,7 +35,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 
     public function testAddingWater() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(10000); 
+        $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
         $machine->addBeans(50);
@@ -46,7 +46,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 
     public function testDescaleNeededException() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(10000); 
+        $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
         $machine->addBeans(50);
@@ -81,7 +81,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 
     public function testDescaling() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(10000); 
+        $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10); 
         $machine->addBeans(50);
@@ -96,7 +96,7 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
 
     public function testDescalingUses1LitreOfWater() {
         $machine = new EspressoMachine();
-        $contrainer = new WaterContainerImplementation(10000); 
+        $contrainer = new WaterContainerImplementation(10); 
         $machine->setWaterContainer($contrainer);
         $machine->addWater(10);
         $machine->addBeans(50);

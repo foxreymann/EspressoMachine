@@ -13,7 +13,7 @@ class EspressoMachine implements EspressoMachineInterface
 
 
     public function __construct() {
-        $waterContrainer = new WaterContainerImplementation(2000); 
+        $waterContrainer = new WaterContainerImplementation(2); 
         $this->setWaterContainer($waterContrainer);
         $beansContrainer = new BeansContainerImplementation(50); 
         $this->setBeansContainer($beansContrainer);
@@ -29,11 +29,11 @@ class EspressoMachine implements EspressoMachineInterface
     * @return void
     */
     public function descale() {
-        if($this->waterContainer->getWater() - 1000 < 0) {
+        if($this->waterContainer->getWater() - 1 < 0) {
             throw new NoWaterException();
         }
         $this->needsDescaling = false;
-        $this->waterContainer->useWater(1000);
+        $this->waterContainer->useWater(1);
     }
 
     /**
@@ -44,7 +44,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeEspresso() {
-        return $this->makeCoffee(50,1);
+        return $this->makeCoffee(0.05,1);
     }
 
     /**
@@ -54,7 +54,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return float of litres of coffee made
     */
     public function makeDoubleEspresso() {
-        return $this->makeCoffee(100,2);
+        return $this->makeCoffee(0.1,2);
     }
 
     private function makeCoffee($waterAmount,$beansAmount) {
@@ -62,10 +62,10 @@ class EspressoMachine implements EspressoMachineInterface
            throw new DescaleNeededException(); 
         }
 
-        if(($this->amountOfCofeeMadeInMl / 5000) < intval(($this->amountOfCofeeMadeInMl + $waterAmount) / 5000)) {
+        if(($this->amountOfCofeeMadeInMl / 5000) < intval(($this->amountOfCofeeMadeInMl + $waterAmount * 1000) / 5000)) {
             $this->needsDescaling = true;
         }
-        $this->amountOfCofeeMadeInMl+=$waterAmount;
+        $this->amountOfCofeeMadeInMl = $this->amountOfCofeeMadeInMl + $waterAmount * 1000;
 
         if($this->waterContainer->getWater() - $waterAmount < 0) {
             throw new NoWaterException();
@@ -133,13 +133,12 @@ class EspressoMachine implements EspressoMachineInterface
     * @return void
     */
     public function addWater($liters) {
-        $mililiters = $liters * 1000;
         /*
         if($this->waterContainer->addWater($mililiters)) {
              
         }
         */
-        $this->waterContainer->addWater($mililiters);
+        $this->waterContainer->addWater($liters);
     }
 
     /**
@@ -150,7 +149,7 @@ class EspressoMachine implements EspressoMachineInterface
     * @return integer
     */
     public function useWater($litres) {
-        $this->waterContainer->useWater($litres * 1000);
+        $this->waterContainer->useWater($litres);
     }
 
     /**
@@ -160,7 +159,7 @@ class EspressoMachine implements EspressoMachineInterface
     */
 
     public function getWater() {
-        return $this->waterContainer->getWater() / 1000;
+        return $this->waterContainer->getWater();
     }
 
     /**
@@ -198,34 +197,14 @@ class EspressoMachine implements EspressoMachineInterface
 
 class BeansContainerImplementation extends Container implements BeansContainer
 {
-    /**
-    * Adds beans to the container
-    *
-    * @param integer $numSpoons number of spoons of beans
-    * @throws ContainerFullException, EspressoMachineContainerException
-    *
-    * @return void
-    */
     public function addBeans($numSpoons) {
         $this->add($numSpoons);
     }
 
-    /**
-    * Get $numSpoons from the container
-    *
-    * @throws EspressoMachineContainerException
-    * @param integer $numSpoons number of spoons of beans
-    * @return integer
-    */
     public function useBeans($numSpoons) {
         $this->used($numSpoons);
     }
 
-    /**
-    * Returns the number of spoons of beans left in the container
-    *
-    * @return integer
-    */
     public function getBeans() {
         return $this->get();
     }
