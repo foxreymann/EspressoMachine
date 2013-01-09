@@ -95,6 +95,10 @@ class EspressoMachine implements EspressoMachineInterface
     * @return string
     */
     public function getStatus() {
+        if($this->getWater() <= 0 && $this->getBeans() <= 0) {
+            return 'Add beans and water';
+        }
+
         if($this->getWater() <= 0 || ($this->needsDescaling && $this->getWater() < 1)) {
             return 'Add water';
         }
