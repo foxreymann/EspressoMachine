@@ -234,34 +234,15 @@ class BeansContainerImplementation extends Container implements BeansContainer
 
 class WaterContainerImplementation extends Container implements WaterContainer
 {
-    /**
-    * Adds water to the coffee machine's water tank
-    *
-    * @param float $litres
-    * @throws ContainerFullException, EspressoMachineContainerException
-    *
-    * @return void
-    */
+
     public function addWater($liters) {
         $this->add($liters);
     }
 
-    /**
-    * Use $litres from the container
-    *
-    * @throws EspressoMachineContainerException
-    * @param float $litres
-    * @return integer
-    */
     public function useWater($liters) {
         $this->used($liters);
     }
 
-    /**
-    * Returns the volume of water left in the container
-    *
-    * @return float number of litres
-    */
     public function getWater() {
         return $this->get();
     }
@@ -278,6 +259,9 @@ class Container
     }
 
     public function add($amount) {
+        if($this->amount + $amount > $this->capacity) {
+            throw new ContainerFullException(); 
+        }
         $this->amount+=$amount;
     }
 
