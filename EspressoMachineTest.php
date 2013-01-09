@@ -217,5 +217,19 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $machine->addBeans(2);
         $this->assertEquals('2 Espressos left',$machine->getStatus());
     }
+
+    public function testGetStatusWhen100MililiterOfWaterAndManyBeans() {
+        $machine = new EspressoMachine();
+        $machine->addWater(0.1);
+        $machine->addBeans(20);
+        $this->assertEquals('2 Espressos left',$machine->getStatus());
+    }
+
+    public function testGetStatusWhen110MililiterOfWaterAndManyBeans() {
+        $machine = new EspressoMachine();
+        $machine->addWater(0.11);
+        $machine->addBeans(20);
+        $this->assertEquals('2 Espressos left',$machine->getStatus());
+    }
     
 }
