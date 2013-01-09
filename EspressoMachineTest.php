@@ -150,4 +150,15 @@ class EspressoMachineTest extends PHPUnit_Framework_TestCase
         $this->fail('An expected exception has not been raised.');
     }
 
+    public function testEspressoMachineContainerExceptionWhenAddingWater() {
+        $machine = new EspressoMachine(); 
+        try {
+            $machine->addWater(3); 
+        }
+        catch (EspressoMachineContainerException $expected) {
+            return;
+        }
+        $this->fail('An expected exception has not been raised.');
+    }
+
 }

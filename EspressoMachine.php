@@ -133,12 +133,12 @@ class EspressoMachine implements EspressoMachineInterface
     * @return void
     */
     public function addWater($liters) {
-        /*
-        if($this->waterContainer->addWater($mililiters)) {
-             
+        try {
+            $this->waterContainer->addWater($liters);
+        } 
+        catch(NoWaterException $e) {
+            throw new EspressoMachineContainerException(); 
         }
-        */
-        $this->waterContainer->addWater($liters);
     }
 
     /**
